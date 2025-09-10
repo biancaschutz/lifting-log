@@ -9,6 +9,16 @@ st.set_page_config(
     layout="wide"
 )
 
+def get_new_microcycle():
+    with sql.connect("workout_log.db") as conn:
+        query = """
+        SELECT MAX(Microcycle) AS max_micro
+        FROM log
+        """
+        last_micro = pd.read_sql_query(query, conn)['max_micro'][0]
+
+        return last_micro
+    
 def get_workout_routine(input_date):
     if datetime.strptime(input_date, "%m/%d/%Y") > datetime.today():
         return "TBD"
@@ -60,19 +70,21 @@ def get_volume_alltime():
         return merged_sets[['Microcycle', 'Muscle', 'Total Volume']]
     
 
-def get_volume_week(start, end):
+def get_volume_week(microcycle):
     with sql.connect("workout_log.db") as conn:
         query = """
         SELECT l.Date, l.Exercise, e."Primary", e.Secondary
-        FROM (SELECT * FROM log WHERE Date >= ? AND Date <= ?) l
+        FROM (SELECT * FROM log WHERE Microcycle = ?) l
         LEFT JOIN exercises e
         ON l.Exercise = e.Exercise
         """
         exercises_range = pd.read_sql_query(
             query,
             conn,
-            params=(start, end) 
+            params=(microcycle,) 
         )
+
+        dates = exercises_range[['Date']]
 
         primary_sets = exercises_range.value_counts(["Primary"])
 
@@ -95,7 +107,7 @@ def get_volume_week(start, end):
 
         merged_sets["Total Volume"] = merged_sets["count"] + merged_sets["Secondary"]
 
-        return merged_sets[['Muscle', 'Total Volume']]
+        return dates, merged_sets[['Muscle', 'Total Volume']]
 
 last_week = date.today() - timedelta(weeks=1)
 
@@ -108,20 +120,13 @@ view = st.selectbox(
 if view != "Overall":
     inputs, chart = st.columns([0.3, 0.7])
     with inputs:
-        start_date = st.date_input("Start", value=last_week, format="MM/DD/YYYY")
-
-        if start_date:
-            routine = get_workout_routine(start_date.strftime("%-m/%-d/%Y"))  
-            st.write(f"Routine on {start_date.strftime("%-m/%-d/%Y")}: {routine}")
-
-        end_date = st.date_input("End", value=date.today(), format="MM/DD/YYYY", min_value=start_date + timedelta(days=1))
-
-        if end_date:
-            routine = get_workout_routine(end_date.strftime("%-m/%-d/%Y"))  
-            st.write(f"Routine on {end_date.strftime("%-m/%-d/%Y")}: {routine}")
+        microcycle_number = st.number_input("Week", min_value=1, max_value = get_new_microcycle())
+        dates, data = get_volume_week(microcycle_number)
+        latest = dates['Date'].max()
+        oldest = dates['Date'].min()
+        st.write(f"Showing volume data from {oldest} to {latest}")
     with chart: 
-        if start_date and end_date:
-            data = get_volume_week(start_date.strftime("%-m/%-d/%Y"), end_date.strftime("%-m/%-d/%Y"))
+        if microcycle_number:
             st.bar_chart(data, x="Muscle", y="Total Volume", color = "#fcb414")
 
 else: 
