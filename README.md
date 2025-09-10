@@ -1,5 +1,7 @@
 # Bianca's Data-Based Lifting (DBL, instead of Science-Based Lifting) Tracker
 
+## About
+
 Frustrated with Hevy, my workout tracking app, for its limited insights over time (including ones you have to pay for), I decided to create my own personal workout log. This page allows you to update the workout log while also viewing important trends like 1 rep maximum calculations and total weekly volume. 
 
 The data is stored locally in a SQL database, which the Streamlit browser page connects with to show my workout progress and allows me to modify my log and other stored data. 
@@ -14,3 +16,7 @@ This is a work in progress, and I intend to add:
 - and other features as I think of them!
 
 Feel free to fork this if you're looking to better understand the science behind your lifts :)
+
+## Instructions
+
+To run this, simply navigate to your local repo on your computer and run "streamlit run Home.py" in your terminal. 
