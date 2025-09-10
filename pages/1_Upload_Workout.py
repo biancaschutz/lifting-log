@@ -24,7 +24,7 @@ def get_new_microcycle():
             microcycle += 1
         return microcycle
 
-st.write("# Log a new workout")
+st.write("# Log a new workout 📝")
 
 # text for upload interface
 st.write("## Upload a workout CSV file here")

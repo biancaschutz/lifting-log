@@ -59,6 +59,7 @@ with add_exercise:
                     cursor.execute(insert_query, (name, primary, secondaries))
                     conn.commit()
                 st.session_state["success_msg"] = f"Successfully added {name} to the exercise library."
+                # rerun to add it to the library and reload table so user can see it was successfully added
                 st.rerun()
 
 

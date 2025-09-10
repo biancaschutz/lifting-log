@@ -9,11 +9,7 @@ st.write("# Weightlifting Tracker 🏋🏻")
 
 st.markdown(
         """
-        First draft. Currently able to calculate 1RM and add entries to DB file.
-        App is meant to run locally using SQLite as data storage.
+        Welcome to my weightlifting log and progress tracker! 
 
-        Functionalities coming:
-        Volume per week
-        Home page becomes dashboard-like
-        Able to change and view routines (calendar maybe?)
+        This tool is a work in progress, but is meant to help an individual track 1RM, weekly volume, and other data about workouts.
         """)
