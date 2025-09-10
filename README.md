@@ -20,3 +20,5 @@ Feel free to fork this if you're looking to better understand the science behind
 ## Instructions
 
 To run this, simply navigate to your local repo on your computer and run "streamlit run Home.py" in your terminal. 
+
+![Screenshot of a weekly volume bar chart.](examplevolume.png)
