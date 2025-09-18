@@ -1,4 +1,4 @@
-# Bianca's Data-Based Lifting (DBL, instead of Science-Based Lifting) Tracker
+# Bianca's Data-Based Lifting Tracker
 
 ## About
 
