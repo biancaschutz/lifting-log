@@ -20,7 +20,7 @@ view = st.selectbox(
 if view != "Overall":
     inputs, chart = st.columns([0.3, 0.7])
     with inputs:
-        microcycle_number = st.number_input("Week", min_value=1, max_value = get_max_microcycle())
+        microcycle_number = st.number_input("Week", min_value=1, max_value = int(get_max_microcycle()))
         dates, data = get_volume_week(microcycle_number)
         latest = dates['Date'].max()
         oldest = dates['Date'].min()
@@ -31,5 +31,5 @@ if view != "Overall":
 
 else: 
     data = get_volume_alltime()
+    data['Microcycle'] = data['Microcycle'].astype(int)
     st.line_chart(data=data, x="Microcycle", y="Total Volume", color = "Muscle", x_label="Week", y_label="Number of Sets")
-        

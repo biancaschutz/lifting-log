@@ -44,7 +44,9 @@ with add_exercise:
             accept_new_options=True
         )
 
-        secondaries = ", ".join(secondary)
+        secondaries = None
+        if secondary:
+            secondaries = ", ".join(secondary)
 
         print(secondaries)
         submitted = st.form_submit_button('Add Exercise')
